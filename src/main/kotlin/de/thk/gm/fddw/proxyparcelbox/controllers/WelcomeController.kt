@@ -1,4 +1,4 @@
-package de.thk.gm.fddw.proxyparcelbox
+package de.thk.gm.fddw.proxyparcelbox.controllers
 
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.GetMapping
