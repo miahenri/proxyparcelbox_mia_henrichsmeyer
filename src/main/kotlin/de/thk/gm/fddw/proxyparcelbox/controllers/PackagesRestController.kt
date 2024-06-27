@@ -10,15 +10,15 @@ import org.springframework.web.bind.annotation.*
 @RequestMapping("/api/packages")
 class PackagesRestController (private val packagesService: PackagesService) {
 
-    /*@GetMapping
+    @GetMapping
     fun getAllPackages(): List<Package> {
         return packagesService.findAll()
     }
 
     @GetMapping("/{id}")
-    fun getPackageById(@PathVariable id: Long): Package {
-        return packagesService.findById(id)
-    }*/
+    fun getPackageById(@PathVariable id: String): Package? {
+        return packagesService.findByTrackingNumber(id)
+    }
 
     @PostMapping("/packages")
     @ResponseStatus(HttpStatus.CREATED)
@@ -27,14 +27,15 @@ class PackagesRestController (private val packagesService: PackagesService) {
         return paket
     }
 
-    /*@DeleteMapping("/{id}")
-    fun deletePackage(@PathVariable id: Long) {
-        packagesService.deleteById(id)
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    fun deletePackage(@PathVariable id: String) {
+        packagesService.delete(packagesService.findByTrackingNumber(id)!!)
     }
 
     @PutMapping("/{id}")
-    fun updatePackage(@PathVariable id: Long, @RequestBody package: Package): Package {
-        return packagesService.update(id, package)
-    }*/
+    fun updatePackage(@PathVariable id: Long, @RequestBody paket: Package): Package {
+        return packagesService.update(id, paket)
+    }
 
 }

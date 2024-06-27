@@ -11,10 +11,6 @@ class PackagesServiceImpl (private val packagesRepository: PackagesRepository) :
         return packagesRepository.findAll().toList()
     }
 
-    override fun findById(id: Long): Package? {
-        return packagesRepository.findById(id).orElse(null)
-    }
-
     override fun findByTrackingNumber(trackingNumber: String): Package? {
         return packagesRepository.findByTrackingNumber(trackingNumber)
     }
@@ -25,6 +21,10 @@ class PackagesServiceImpl (private val packagesRepository: PackagesRepository) :
 
     override fun delete(paket: Package) {
         packagesRepository.delete(paket)
+    }
+
+    override fun update(id: Long, paket: Package): Package {
+        return packagesRepository.save(paket)
     }
 
 }
