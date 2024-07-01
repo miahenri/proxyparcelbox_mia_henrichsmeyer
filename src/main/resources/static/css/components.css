@@ -1,0 +1,11 @@
+.main-header {
+    padding: var(--m);
+    background-color: var(--color-th-pink-lighter);
+    color: var(--color-white)
+}
+
+.main-nav-bar{
+    padding: var(--m);
+    background-color: var(--color-th-pink-lighter);
+    color: var(--color-white)
+}

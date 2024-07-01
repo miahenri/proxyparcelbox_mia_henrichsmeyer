@@ -2,6 +2,10 @@
 <head lang = "de">
     <meta charset="UTF-8">
     <title>Chat zeigen</title>
+    <link rel="stylesheet" href="../static/css/reset.css">
+    <link rel="stylesheet" href=../static/css/variables.css">
+    <link rel="stylesheet" href="../static/css/base.css">
+    <link rel="stylesheet" href="../static/css/components.css">
 </head>
 <#import "layout.ftlh" as base>
 <@base.layout>
