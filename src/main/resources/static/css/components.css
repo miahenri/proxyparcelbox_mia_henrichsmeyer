@@ -1,11 +1,54 @@
 .main-header {
     padding: var(--m);
-    background-color: var(--color-th-pink-lighter);
-    color: var(--color-white)
+    background-color: var(--color-grey);
+    color: var(--color-white);
+
+    .main-nav-bar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+    }
+
+    .basic-link {
+        color: var(--color-darkest);
+        text-decoration: none;
+        font-size: var(--s);
+        font-weight: var(--fw-medium);
+        padding: var(--xs);
+    }
+
+    .user-button{
+        background-color: var(--color-blue);
+        color: var(--color-white);
+        border-radius: 4px;
+        border: none;
+        padding: 2px 8px;
+    }
+
 }
 
-.main-nav-bar{
-    padding: var(--m);
-    background-color: var(--color-th-pink-lighter);
-    color: var(--color-white)
+.input-form{
+    display: flex;
+    flex-direction: column;
+    padding: var(--xxs) var(--m);
+
+    input{
+        padding: var(--xxs);
+        margin: var(--xxs) 0;
+        border: 1px solid var(--color-grey-medium);
+        border-radius: 4px;
+        max-width: 70%;
+    }
+
 }
+
+.main-footer{
+    padding: var(--m);
+    font-size: var(--s);
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+

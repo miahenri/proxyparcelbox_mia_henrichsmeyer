@@ -9,6 +9,14 @@ html, body{
     font-weight: var(--fw-regular);
 }
 
+body{
+    margin: 0;
+
+    &hr{
+        margin: 0;
+    }
+}
+
 main > *{
     padding: var(--m);
 }
@@ -20,7 +28,6 @@ h1, h2, h3, h4, h5, h6 {
 
 h1{
     margin-top: var(--xxs);
-    margin-bottom: var(--s);
     font-size: var(--xl);
 }
 
