@@ -31,7 +31,7 @@ class MessagesServiceImpl(
     override fun getChatRoomMessages(chat: Package): List<Message> {
         logger.info("Fetching messages for package with tracking number: ${chat.id}")
 
-        val messages = messagesRepository.findByPackage(chat)
+        val messages = messagesRepository.findByChat(chat)
 
         logger.info("Retrieved ${messages.size} messages for package with tracking number: ${chat.id}")
 
