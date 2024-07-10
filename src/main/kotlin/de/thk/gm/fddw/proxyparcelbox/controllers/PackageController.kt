@@ -5,7 +5,12 @@ import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import de.thk.gm.fddw.proxyparcelbox.models.Package
 import de.thk.gm.fddw.proxyparcelbox.services.MessagesService
+import de.thk.gm.fddw.proxyparcelbox.services.MessagesServiceImpl
 import de.thk.gm.fddw.proxyparcelbox.services.PackagesService
+import de.thk.gm.fddw.proxyparcelbox.services.PackagesServiceImpl
+import org.slf4j.LoggerFactory
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 
@@ -13,12 +18,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes
 class PackageController (
     val packagesRestController: PackagesRestController,
     val packagesService: PackagesService,
-    val messagesService: MessagesService) {
+    val messagesService: MessagesService,
+    val messagesServiceImpl: MessagesServiceImpl) {
 
     data class ChatRequest(
         var trackingNumber: String,
         var nachbarEmail: String
     )
+
+    companion object {
+        private val logger = LoggerFactory.getLogger(PackageController::class.java)
+    }
 
     @GetMapping("/demo")
     fun getIndex(model: Model): String {
@@ -39,6 +49,21 @@ class PackageController (
         packagesService.save(paket)
 
         return "redirect:/parcels/${paket.id}"
+    }
+
+    @PostMapping("/chats/{trackingNumber}")
+    fun saveMessage(@PathVariable("trackingNumber") trackingNumber: String, @RequestBody message: Message): ResponseEntity<Message> {
+
+        logger.info("saveMessage called with trackingNumber: $trackingNumber and message: $message")
+
+        val chat : Package? = packagesService.findByTrackingNumber(trackingNumber)
+        return if (chat != null) {
+            message.chat = chat
+            messagesServiceImpl.createAndSaveMessage(trackingNumber, message.sender, message.text)
+            ResponseEntity.ok().build()
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
     }
 
     @GetMapping("/chats/{trackingNumber}")

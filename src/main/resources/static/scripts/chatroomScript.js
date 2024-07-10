@@ -25,7 +25,7 @@ window.onload = function() {
         const messageText = input.value;
 
         let date = new Date();
-        let timestamp = date.toLocaleDateString('de-DE', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ', ' + date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+        let timestamp =  date.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
 
         const messageHtml = '<div class="sent">' +
             '<p>' + messageText + '</p>' +
@@ -62,7 +62,7 @@ window.onload = function() {
 
     function getTimestamp() {
         const currentTime = new Date();
-        return currentTime.toLocaleDateString('de-DE', {year: 'numeric', month: '2-digit', day: '2-digit'}) + ', ' + currentTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit', second: '2-digit'});
+        return currentTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
     }
 
     document.getElementById('sending').addEventListener('click', sendMessage)

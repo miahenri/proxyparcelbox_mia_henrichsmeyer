@@ -1,12 +1,9 @@
 :root {
-    --color-th-orange: #ea5b0c;
     --color-grey: #E8E8E8;
     --color-grey-medium: #D8D8D8;
     --color-grey-dark: hsl(0deg 0% 40%);
     --color-white: #fff;
     --color-darkest: #000;
-    --color-th-pink: #B62584;
-    --color-th-pink-lighter: #dd639a;
     --color-green-dark: #44803F;
     --color-green: #9BBF65;
     --ff-primary: source-sans-3, arial, helvetica, sans-serif;
