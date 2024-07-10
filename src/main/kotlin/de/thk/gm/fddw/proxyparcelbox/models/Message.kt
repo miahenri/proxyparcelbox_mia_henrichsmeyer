@@ -17,5 +17,5 @@ class Message () {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")
-    var paket: Package? = null
+    var chat: Package? = null
 }

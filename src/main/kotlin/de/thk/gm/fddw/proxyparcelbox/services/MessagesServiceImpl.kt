@@ -16,13 +16,17 @@ class MessagesServiceImpl(
         private val logger = LoggerFactory.getLogger(MessagesServiceImpl::class.java)
     }
 
+    override fun findByChat(paket: Package): List<Message> {
+        return messagesRepository.findByChat(paket)
+    }
+
     @Transactional
     override fun save(message: Message): Message {
-        logger.info("Saving message with ID: ${message.id}, sender: ${message.sender}, text: ${message.text}, associated with package tracking number: ${message.paket?.trackingNumber}")
+        logger.info("Saving message with ID: ${message.id}, sender: ${message.sender}, text: ${message.text}, associated with package tracking number: ${message.chat?.trackingNumber}")
 
         val savedMessage = messagesRepository.save(message)
 
-        logger.info("Saved message with ID: ${savedMessage.id}, sender: ${savedMessage.sender}, text: ${savedMessage.text}, associated with package tracking number: ${savedMessage.paket?.trackingNumber} to the database")
+        logger.info("Saved message with ID: ${savedMessage.id}, sender: ${savedMessage.sender}, text: ${savedMessage.text}, associated with package tracking number: ${savedMessage.chat?.trackingNumber} to the database")
 
         return savedMessage
     }

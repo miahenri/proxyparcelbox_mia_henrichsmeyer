@@ -8,7 +8,5 @@ import java.util.*
 
 @Repository
 interface MessagesRepository: CrudRepository<Message, UUID> {
-    fun findBySender(sender: String): List<Message>
-    fun findByPackageTrackingNumberOrderByCreatedAt(trackingNumber: String): List<Message>
     fun findByChat(paket: Package): List<Message>
 }

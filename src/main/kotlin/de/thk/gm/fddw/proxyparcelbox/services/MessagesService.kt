@@ -7,4 +7,5 @@ interface MessagesService {
     fun save(message: Message): Message
     fun getAllMessages(): List<Message>
     fun getChatRoomMessages(chat: Package): List<Message>
+    fun findByChat(paket: Package): List<Message>
 }
