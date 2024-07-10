@@ -24,7 +24,7 @@
 </header>
 <nav class="info-nav">
     <div>
-        <h2>Chat Sendungsnummer: ${paket.trackingNumber}</h2>
+        <h2>Chat Sendungsnummer: ${chat.trackingNumber}</h2>
     </div>
     <button class="user-button">Chat abonnieren</button>
 </nav>
@@ -42,12 +42,12 @@
     </div>
 </section>
 
-<form class="send-message" action="/chat" method="post">
+<form class="send-message" action="/chats" method="post">
     <div>
         <input type="text" name="messageUser" placeholder="Username..">
         <input type="email" name="messageText" placeholder="Message..">
     </div>
-    <input id="sending" type="submit" value="Send">
+    <button id="sendMessage">Send</button>
 </form>
 <footer class="main-footer">
     © Mia Henrichsmeyer 2024

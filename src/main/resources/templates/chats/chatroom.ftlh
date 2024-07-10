@@ -3,33 +3,38 @@
     <body>
     <nav class="info-nav">
         <div>
-            <h2>Chat Sendungsnummer: ${paket.trackingNumber}</h2>
+            <h2 id="trackingNumber">Chat Sendungsnummer: ${chat.trackingNumber}</h2>
         </div>
         <button class="user-button">Chat abonnieren</button>
     </nav>
 
     <section class="chatBox">
         <div class="messages">
-            <div class="received">
-                <p>Your received text here long text to test the chatbox messages</p>
-                <span class="timestamp">15:44</span>
-            </div>
-            <div class="sent">
-                <p>Your sent text here longer text to test the chatbox message and see how it reacts</p>
-                <span class="timestamp">18:34</span>
-            </div>
+            <#-- Loop over the messages -->
+            <#list messages as message>
+            <#-- Check if the message was sent or received -->
+                <#if message.sender == "User">
+                    <div class="sent">
+                        <p>${message.text}</p>
+                        <span class="timestamp">${message.createdAt}</span>
+                    </div>
+                <#else>
+                    <div class="received">
+                        <p class="sender">${message.text}</p>
+                        <span class="timestamp">${message.createdAt}</span>
+                    </div>
+                </#if>
+            </#list>
         </div>
     </section>
 
     <form class="send-message" action="/chat" method="post">
         <div>
-            <input type="text" name="messageUser" placeholder="Username..">
-            <input type="email" name="messageText" placeholder="Message..">
+            <input type="text" id="messageUser" placeholder="Username..">
+            <input type="text" id="messageText"  placeholder="Message..">
         </div>
-        <input id="sending" type="submit" value="Send">
+        <button class="user-button" id="sending" type="button">Send</button>
     </form>
-    <footer class="main-footer">
-        © Mia Henrichsmeyer 2024
-    </footer>
+    <script src="/scripts/chatroomScript.js"></script>
     </body>
 </@base.layout>
