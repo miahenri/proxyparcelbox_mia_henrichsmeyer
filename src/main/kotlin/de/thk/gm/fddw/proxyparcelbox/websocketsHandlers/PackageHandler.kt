@@ -6,9 +6,11 @@ import org.springframework.stereotype.Component
 import org.springframework.web.socket.*
 import org.springframework.web.socket.handler.TextWebSocketHandler
 import java.util.*
+import kotlin.collections.ArrayList
 
 @Component
 class PackageHandler (private val messagesService: MessagesService) : TextWebSocketHandler() {
+    private var sessions: ArrayList<WebSocketSession> = ArrayList()
     override fun handleTextMessage(session: WebSocketSession, message: TextMessage) {
         val chatMessage = Message()
         chatMessage.text = message.payload

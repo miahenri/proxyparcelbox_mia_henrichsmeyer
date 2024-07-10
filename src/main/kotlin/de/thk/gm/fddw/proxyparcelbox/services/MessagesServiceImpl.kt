@@ -46,4 +46,18 @@ class MessagesServiceImpl(
     override fun getAllMessages(): List<Message> {
         return messagesRepository.findAll().toList()
     }
+
+    fun createAndSaveMessage(trackingNumber: String, sender: String, text: String) {
+        // Fetch the Chat with the given tracking number
+        val chat = packagesRepository.findByTrackingNumber(trackingNumber)
+
+        // Create a new Message
+        val message = Message()
+        message.sender = sender
+        message.text = text
+        message.chat = chat
+
+        // Save the Message
+        save(message)
+    }
 }
