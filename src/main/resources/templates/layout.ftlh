@@ -12,12 +12,11 @@
     <body>
     <header class="main-header">
         <nav class="main-nav-bar">
+            <img class="logo" src="/images/proxyparcel-logo-hell-kopie.png" alt="Logo" height="90">
             <div>
                 <a class="basic-link" href="/new-parcels">Chat starten</a>
                 <a class="basic-link" href="/new-parcels">Support</a>
                 <a class="basic-link" href="/new-parcels">Über uns</a>
-            </div>
-            <div>
                 <button class="user-button">Login</button>
                 <button class="user-button">Registrierung</button>
             </div>

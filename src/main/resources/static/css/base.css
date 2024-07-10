@@ -3,7 +3,7 @@
 }
 
 html, body{
-    background-color: var(--color-white);
+    background-color: var(--color-grey-dark);
     font-family: "source-sans-3", Arial, sans-serif;
     font-size: var(--m);
     font-weight: var(--fw-regular);
@@ -23,6 +23,7 @@ main > *{
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: var(--fw-bold);
+    color: var(--color-white);
 }
 
 
