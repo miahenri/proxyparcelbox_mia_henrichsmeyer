@@ -76,8 +76,8 @@
 }
 
 .send-message{
-    display: flex;
-    flex-direction: row;
+    display: grid;
+    grid-template-columns: 1.7fr 0.3fr;
     padding: var(--m);
     border-top: 1px solid var(--color-grey-medium);
 
@@ -95,12 +95,14 @@
     input{
         border: 1px solid var(--color-grey);
         border-radius: 5px;
+        color: var(--color-white);
         background-color: var(--color-grey-medium);
         padding: var(--xxs);
-        width: 50rem;
-        max-width: 60rem;
+        width: 100%;
+        max-width: 100%;
         font-size: 15px;
-        margin-bottom: var(--s)
+        margin-bottom: var(--s);
+        box-sizing: border-box;
     }
 
     #sending{

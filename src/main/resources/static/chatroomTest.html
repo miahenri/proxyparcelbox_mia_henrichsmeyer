@@ -41,12 +41,12 @@
     </div>
 </section>
 
-<form class="send-message" action="/chats" method="post">
+<form class="send-message" action="/chat" method="post">
     <div>
-        <input type="text" name="messageUser" placeholder="Username..">
-        <input type="email" name="messageText" placeholder="Message..">
+        <input type="text" id="messageUser" placeholder="Username..">
+        <input type="text" id="messageText"  placeholder="Message..">
     </div>
-    <button id="sendMessage">Send</button>
+    <button class="user-button" id="sending" type="button">Send</button>
 </form>
 <footer class="main-footer">
     © Mia Henrichsmeyer 2024
