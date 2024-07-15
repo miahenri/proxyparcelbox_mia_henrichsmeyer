@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function getTimestamp() {
         const currentTime = new Date();
-        return currentTime.toLocaleTimeString('de-DE', {hour: '2-digit', minute: '2-digit'});
+        return currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     }
 
     function appendMessage(type, text, timestamp) {
@@ -24,11 +24,25 @@ document.addEventListener('DOMContentLoaded', function() {
         messageDiv.appendChild(timestampSpan);
 
         echo.appendChild(messageDiv);
+        echo.scrollTop = echo.scrollHeight; // Scroll to the bottom
     }
 
-    ws.onmessage = function (message) {
-        console.log("Nachricht angekommen: " + message.data);
+    // WebSocket event handlers
+    ws.onopen = function() {
+        console.log("WebSocket connection opened");
+    };
+
+    ws.onerror = function(error) {
+        console.error("WebSocket error observed:", error);
+    };
+
+    ws.onmessage = function(message) {
+        console.log("WebSocket message received: " + message.data);
         appendMessage('received', message.data);
+    };
+
+    ws.onclose = function(event) {
+        console.log('WebSocket is closed now.', event);
     };
 
     function sendMessage() {
@@ -42,6 +56,8 @@ document.addEventListener('DOMContentLoaded', function() {
             text: messageText
         };
 
+        console.log("Sending message to server:", message);
+
         fetch('/chats/' + trackingNumber, {
             method: 'POST',
             headers: {
@@ -52,6 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            console.log('Message saved to chat history');
         }).catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
         });
@@ -61,8 +78,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     sendButton.addEventListener('click', sendMessage);
-    input.addEventListener('keypress', function (event) {
+    input.addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
+            event.preventDefault();
             sendMessage();
         }
     });

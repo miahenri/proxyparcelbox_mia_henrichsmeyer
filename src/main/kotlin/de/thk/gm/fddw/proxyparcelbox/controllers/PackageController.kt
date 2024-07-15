@@ -81,11 +81,16 @@ class PackageController (
     @GetMapping("/chats/{trackingNumber}/messages")
     @ResponseBody
     fun getChatMessages(@PathVariable("trackingNumber") trackingNumber: String): List<Message> {
+        val logger = LoggerFactory.getLogger(PackageController::class.java)
+
         val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
-        return if (chat != null) {
-            messagesService.getChatRoomMessages(chat)
+        if (chat != null) {
+            val messages = messagesService.getChatRoomMessages(chat)
+            logger.info("Successfully fetched ${messages.size} messages for chat with tracking number: $trackingNumber")
+            return messages
         } else {
-            emptyList()
+            logger.warn("Chat with tracking number $trackingNumber not found")
+            return emptyList()
         }
     }
 }
