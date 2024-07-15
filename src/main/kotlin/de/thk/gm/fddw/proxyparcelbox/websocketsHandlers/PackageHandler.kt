@@ -23,4 +23,13 @@ class PackageHandler (private val messagesService: MessagesService) : TextWebSoc
         // Broadcast the message to all connected sessions
         session.sendMessage(message)
     }
+
+    override fun afterConnectionEstablished(session: WebSocketSession) {
+        super.afterConnectionEstablished(session)
+        sessions.add(session)
+    }
+
+    override fun afterConnectionClosed(session: WebSocketSession, status: CloseStatus) {
+        sessions.removeIf { it.id == session.id }
+    }
 }

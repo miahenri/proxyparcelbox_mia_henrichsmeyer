@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired
 class WebSocketConfig @Autowired constructor(private val messagesService: MessagesService) : WebSocketConfigurer {
 
     override fun registerWebSocketHandlers(registry: WebSocketHandlerRegistry) {
-        registry.addHandler(PackageHandler(messagesService), "/chats")
+        registry.addHandler(PackageHandler(messagesService), "/messages")
             //.addHandler(EchoHandler(messagesService), "/echo") // Pass messagesService to EchoHandler
             .setAllowedOrigins("*")
     }
