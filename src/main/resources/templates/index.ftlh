@@ -14,6 +14,7 @@
     <form class="input-form" action="/parcels" method="post">
         <input type="text" name="trackingNumber" placeholder="Bitte Sendungsnummer eingeben...">
         <input type="email" name="nachbarEmail" placeholder="E-Mail des Nachbarn (optional)">
+        <input type="email" name="emailUser" placeholder="Eigene Email (optional)">
         <input type="submit" value="Abschicken">
     </form>
 </@base.layout>

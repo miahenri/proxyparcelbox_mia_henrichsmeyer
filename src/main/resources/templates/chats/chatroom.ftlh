@@ -30,7 +30,7 @@
 
     <form class="send-message" action="/chat" method="post">
         <div>
-            <input type="text" id="messageUser" placeholder="Username..">
+            <input type="text" id="messageEmail" placeholder="E-Mail..">
             <input type="text" id="messageText"  placeholder="Message..">
         </div>
         <button class="user-button" id="sending" type="button">Send</button>

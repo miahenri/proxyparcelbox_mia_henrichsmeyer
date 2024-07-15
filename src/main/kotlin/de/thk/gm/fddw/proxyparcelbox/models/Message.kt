@@ -14,6 +14,7 @@ class Message () {
     var createdAt: Date = Date()
     var sender: String = ""
     var text: String = ""
+    var email: String = ""
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "chat_id")

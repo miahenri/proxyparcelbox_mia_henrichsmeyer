@@ -8,6 +8,7 @@ class Package(val trackingNumber: String) {
     @Id
     var id: String = trackingNumber
     var nachbarMail: String = ""
+    var emailUser: String = ""
 
     override fun toString(): String {
         return "TrackingNumber: $id, Nachbar: $nachbarMail"

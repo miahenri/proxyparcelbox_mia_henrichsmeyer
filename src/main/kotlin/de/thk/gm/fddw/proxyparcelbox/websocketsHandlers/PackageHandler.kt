@@ -24,7 +24,7 @@ class PackageHandler (private val messagesService: MessagesService) : TextWebSoc
         }
         val messages = messagesService.getAllMessages()
         messages.forEach { msg ->
-            logger.info("Message ID: ${msg.id}, Text: ${msg.text}, Created At: ${msg.createdAt}, Sender: ${msg.sender}")
+            logger.info("Message ID: ${msg.id}, Text: ${msg.text}, Created At: ${msg.createdAt}, Sender: ${msg.sender}, Email: ${msg.email}")
         }
     }
 

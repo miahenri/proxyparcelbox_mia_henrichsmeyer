@@ -23,7 +23,8 @@ class PackageController (
 
     data class ChatRequest(
         var trackingNumber: String,
-        var nachbarEmail: String
+        var nachbarEmail: String,
+        var emailUser: String
     )
 
     companion object {
@@ -46,6 +47,7 @@ class PackageController (
     fun newParcelsForm(@ModelAttribute chatRequest: ChatRequest, model: Model): String {
         var paket: Package = Package(chatRequest.trackingNumber)
         paket.nachbarMail = chatRequest.nachbarEmail
+        paket.emailUser = chatRequest.emailUser
         packagesService.save(paket)
 
         return "redirect:/parcels/${paket.id}"
@@ -59,7 +61,7 @@ class PackageController (
         val chat : Package? = packagesService.findByTrackingNumber(trackingNumber)
         return if (chat != null) {
             message.chat = chat
-            messagesServiceImpl.createAndSaveMessage(trackingNumber, message.sender, message.text)
+            messagesServiceImpl.createAndSaveMessage(trackingNumber, message.sender, message.text, message.email)
             ResponseEntity.ok().build()
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
@@ -73,6 +75,9 @@ class PackageController (
 
         // Retrieve the messages for this chat room from the database and add them to the model
         val messages = messagesService.getChatRoomMessages(chat!!)
+        messages.forEach() {
+            logger.info("Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
+        }
         model.addAttribute("messages", messages)
 
         return "chats/chatroom"

@@ -26,7 +26,7 @@ class MessagesServiceImpl(
 
         val savedMessage = messagesRepository.save(message)
 
-        logger.info("Saved message with ID: ${savedMessage.id}, sender: ${savedMessage.sender}, text: ${savedMessage.text}, associated with package tracking number: ${savedMessage.chat?.trackingNumber} to the database")
+        logger.info("Saved message with ID: ${savedMessage.id}, sender: ${savedMessage.sender}, text: ${savedMessage.text}, associated with package tracking number: ${savedMessage.chat?.trackingNumber} to the database from email: ${savedMessage.chat?.emailUser}")
 
         return savedMessage
     }
@@ -47,7 +47,7 @@ class MessagesServiceImpl(
         return messagesRepository.findAll().toList()
     }
 
-    fun createAndSaveMessage(trackingNumber: String, sender: String, text: String) {
+    fun createAndSaveMessage(trackingNumber: String, sender: String, text: String, email: String) {
         // Fetch the Chat with the given tracking number
         val chat = packagesRepository.findByTrackingNumber(trackingNumber)
 
@@ -56,6 +56,7 @@ class MessagesServiceImpl(
         message.sender = sender
         message.text = text
         message.chat = chat
+        message.email = email
 
         // Save the Message
         save(message)

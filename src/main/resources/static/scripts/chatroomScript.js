@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ws = new WebSocket("/messages");
     const echo = document.querySelector('.messages');
     const input = document.querySelector('#messageText');
-    const userName = document.querySelector('#messageUser');
+    const email = document.querySelector('#messageEmail');
     const sendButton = document.getElementById('sending');
     const trackingNumber = document.getElementById('trackingNumber').textContent.split(': ')[1];
 
@@ -49,11 +49,13 @@ document.addEventListener('DOMContentLoaded', function() {
     function sendMessage() {
         const messageText = input.value;
         if (!messageText.trim()) return; // Prevent sending empty messages
+        const messageEmail = email.value;
 
         appendMessage('sent', messageText);
 
         const message = {
-            sender: userName.value,
+            sender: 'User',
+            email: messageEmail,
             text: messageText
         };
 
