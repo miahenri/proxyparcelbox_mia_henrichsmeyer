@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ws = new WebSocket("/messages");
     const echo = document.querySelector('.messages');
     const input = document.querySelector('#messageText');
+    const userName = document.querySelector('#messageUser');
     const sendButton = document.getElementById('sending');
     const trackingNumber = document.getElementById('trackingNumber').textContent.split(': ')[1];
 
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', function() {
         appendMessage('sent', messageText);
 
         const message = {
-            sender: 'User',
+            sender: userName.value,
             text: messageText
         };
 
