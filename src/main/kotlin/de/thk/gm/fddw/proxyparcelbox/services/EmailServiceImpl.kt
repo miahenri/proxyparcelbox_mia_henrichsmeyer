@@ -18,4 +18,22 @@ class EmailServiceImpl (private var emailSender: JavaMailSender) : EmailService 
         mail.text = message
         emailSender.send(mail)
     }
+
+    override fun sendConfirmationEmail(email: String, trackingNumber: String) {
+        val mail : SimpleMailMessage = SimpleMailMessage()
+        mail.setTo(email)
+        mail.subject = "Chat Abonnement"
+        mail.from = sender
+        mail.text = "Sie haben den Chat $trackingNumber erfolgreich abonniert. Sie werden ab sofort über den Status des Chats informiert."
+        emailSender.send(mail)
+    }
+
+    override fun sendNotification(email: String, trackingNumber: String, message: String) {
+        val mail : SimpleMailMessage = SimpleMailMessage()
+        mail.setTo(email)
+        mail.subject = "Neue Chat Nachricht"
+        mail.from = sender
+        mail.text = "Sie haben eine neue Nachricht im Chat $trackingNumber erhalten: $message"
+        emailSender.send(mail)
+    }
 }

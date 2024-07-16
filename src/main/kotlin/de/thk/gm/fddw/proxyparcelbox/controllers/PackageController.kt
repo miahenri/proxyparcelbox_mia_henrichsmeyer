@@ -24,7 +24,8 @@ class PackageController (
     data class ChatRequest(
         var trackingNumber: String,
         var nachbarEmail: String,
-        var emailUser: String
+        var emailUser: String,
+        var subscribed: MutableList<String> = mutableListOf()
     )
 
     companion object {
@@ -97,6 +98,20 @@ class PackageController (
             logger.warn("Chat with tracking number $trackingNumber not found")
             return emptyList()
         }
+    }
+
+    data class SubscriptionCheckRequest(val email: String)
+    @PostMapping("/chats/{trackingNumber}/isSubscribed")
+    fun isSubscribed(@PathVariable trackingNumber: String, @RequestBody request: SubscriptionCheckRequest): ResponseEntity<Boolean> {
+        val isSubscribed = packagesService.isSubscribed(trackingNumber, request.email)
+        return ResponseEntity.ok(isSubscribed)
+    }
+
+    @GetMapping("/chats/subscribers/{trackingNumber}")
+    @ResponseBody
+    fun getChatSubscribers(@PathVariable trackingNumber: String): ResponseEntity<List<String>> {
+        val subscribers = packagesService.getSubscribers(trackingNumber)
+        return ResponseEntity.ok(subscribers)
     }
 
     /*@GetMapping("/chats/{trackingNumber}/{userId}")

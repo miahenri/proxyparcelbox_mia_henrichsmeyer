@@ -82,6 +82,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
+            notifySubscribers(messageText, trackingNumber);
             console.log('Message saved to chat history');
         }).catch(error => {
             console.error('There has been a problem with your fetch operation:', error);
@@ -89,6 +90,31 @@ document.addEventListener('DOMContentLoaded', function() {
 
         ws.send(messageText);
         input.value = '';
+    }
+
+    function notifySubscribers(message, trackingNumber){
+        fetch(`/chats/subscribers/${trackingNumber}`)
+            .then(response => response.json())
+            .then(subscribers => {
+                subscribers.forEach(email => {
+                    const url = `/chats/${trackingNumber}/notify`;
+                    fetch(url, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ email, message })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('E-Mail konnte nicht gesendet werden');
+                            }
+                            console.log("E-Mail erfolgreich an " + email + " gesendet");
+                        })
+                        .catch(error => console.error('Error:', error));
+                });
+            })
+            .catch(error => console.error('Error:', error));
     }
 
     sendButton.addEventListener('click', sendMessage);

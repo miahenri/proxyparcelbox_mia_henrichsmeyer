@@ -5,7 +5,7 @@
         <div>
             <h2 id="trackingNumber">Chat Sendungsnummer: ${chat.trackingNumber}</h2>
         </div>
-        <button class="user-button">Chat abonnieren</button>
+        <button class="user-button"><a href="/chats/${chat.trackingNumber}/subscribe">Chat abonnieren</a></button>
     </nav>
 
     <section class="chatBox">
@@ -35,7 +35,7 @@
         </div>
         <button class="user-button" id="sending" type="button">Send</button>
     </form>
-    <p id="chatOwner">Chat Inhaber: ${chat.emailUser}</p>
+    <p class="hidden" id="chatOwner">Chat Inhaber: ${chat.emailUser}</p>
     <script src="/scripts/chatroomScript.js"></script>
     </body>
 </@base.layout>

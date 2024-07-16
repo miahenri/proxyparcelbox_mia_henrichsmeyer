@@ -27,4 +27,12 @@ class PackagesServiceImpl (private val packagesRepository: PackagesRepository) :
         return packagesRepository.save(paket)
     }
 
+    override fun isSubscribed(trackingNumber: String, email: String): Boolean {
+        return packagesRepository.findByTrackingNumber(trackingNumber)?.subscribed?.contains(email) ?: false
+    }
+
+    override fun getSubscribers(id: String): List<String> {
+        val chat = packagesRepository.findByTrackingNumber(id)
+        return chat?.subscribed?.toList() ?: emptyList()
+    }
 }

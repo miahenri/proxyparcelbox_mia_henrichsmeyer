@@ -10,6 +10,9 @@ class Package(val trackingNumber: String) {
     var nachbarMail: String = ""
     var emailUser: String = ""
 
+    @ElementCollection
+    var subscribed: MutableList<String> = mutableListOf()
+
     override fun toString(): String {
         return "TrackingNumber: $id, Nachbar: $nachbarMail"
     }
