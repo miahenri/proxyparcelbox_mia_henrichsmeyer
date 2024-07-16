@@ -31,7 +31,7 @@ class PackageController (
         private val logger = LoggerFactory.getLogger(PackageController::class.java)
     }
 
-    @GetMapping("/demo")
+    @GetMapping("/")
     fun getIndex(model: Model): String {
         return "Index"
     }
@@ -98,4 +98,19 @@ class PackageController (
             return emptyList()
         }
     }
+
+    /*@GetMapping("/chats/{trackingNumber}")
+    fun getChatByTrackingNumber(@PathVariable("trackingNumber") trackingNumber: String, model: Model): String {
+        val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
+        model.addAttribute("chat", chat)
+
+        // Retrieve the messages for this chat room from the database and add them to the model
+        val messages = messagesService.getChatRoomMessages(chat!!)
+        messages.forEach() {
+            logger.info("Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
+        }
+        model.addAttribute("messages", messages)
+
+        return "chats/chatroom"
+    }*/
 }
