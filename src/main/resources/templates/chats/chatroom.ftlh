@@ -35,6 +35,7 @@
         </div>
         <button class="user-button" id="sending" type="button">Send</button>
     </form>
+    <p id="chatOwner">Chat Inhaber: ${chat.emailUser}</p>
     <script src="/scripts/chatroomScript.js"></script>
     </body>
 </@base.layout>

@@ -5,13 +5,22 @@ document.addEventListener('DOMContentLoaded', function() {
     const email = document.querySelector('#messageEmail');
     const sendButton = document.getElementById('sending');
     const trackingNumber = document.getElementById('trackingNumber').textContent.split(': ')[1];
+    const chatOwner = document.getElementById('chatOwner').textContent.split(': ')[1];
 
     function getTimestamp() {
         const currentTime = new Date();
         return currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     }
 
-    function appendMessage(type, text, timestamp) {
+    function appendMessage(type, text, timestamp, sender) {
+        if(sender === chatOwner) {
+            console.log('Comparing sender(' + sender + ' and chatOwner ' + chatOwner +'. Same');
+            type = 'sent';
+        } else {
+            console.log('Comparing sender(' + sender + ' and chatOwner' + chatOwner + '. Different');
+            type = 'received';
+        }
+
         let messageDiv = document.createElement('div');
         messageDiv.classList.add(type);
 
@@ -39,7 +48,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     ws.onmessage = function(message) {
         console.log("WebSocket message received: " + message.data);
-        appendMessage('received', message.data);
+        appendMessage('received', message.data, getTimestamp(), message.email);
     };
 
     ws.onclose = function(event) {
@@ -51,7 +60,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!messageText.trim()) return; // Prevent sending empty messages
         const messageEmail = email.value;
 
-        appendMessage('sent', messageText);
+        appendMessage('sent', messageText, getTimestamp(), messageEmail);
 
         const message = {
             sender: 'User',
@@ -61,7 +70,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         console.log("Sending message to server:", message);
 
-        fetch('/chats/' + trackingNumber, {
+        fetch('/chats/' + trackingNumber, 
+
+            {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

@@ -26,6 +26,10 @@ class UsersServiceImpl (private val usersRepository: UsersRepository) : UsersSer
         return usersRepository.findByEmail(email)
     }
 
+    override fun getCurrentUserEmail(user: User): String {
+        return user.email
+    }
+
     override fun save(user: User) {
         usersRepository.save(user)
         logger.info("User saved: ${user.toString()}")

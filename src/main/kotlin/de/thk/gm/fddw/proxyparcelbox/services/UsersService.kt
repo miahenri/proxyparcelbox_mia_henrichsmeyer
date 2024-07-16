@@ -7,6 +7,7 @@ interface UsersService {
     fun findById(id: UUID): User?
     fun findAll(): List<User>
     fun findByEmail(email: String): User?
+    fun getCurrentUserEmail(user:User): String
     fun save(user: User)
     fun delete(user: User)
 }

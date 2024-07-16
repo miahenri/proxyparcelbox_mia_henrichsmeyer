@@ -4,22 +4,22 @@ import de.thk.gm.fddw.proxyparcelbox.models.Message
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import de.thk.gm.fddw.proxyparcelbox.models.Package
-import de.thk.gm.fddw.proxyparcelbox.services.MessagesService
-import de.thk.gm.fddw.proxyparcelbox.services.MessagesServiceImpl
-import de.thk.gm.fddw.proxyparcelbox.services.PackagesService
-import de.thk.gm.fddw.proxyparcelbox.services.PackagesServiceImpl
+import de.thk.gm.fddw.proxyparcelbox.models.User
+import de.thk.gm.fddw.proxyparcelbox.services.*
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
+import java.util.*
 
 @Controller
 class PackageController (
     val packagesRestController: PackagesRestController,
     val packagesService: PackagesService,
     val messagesService: MessagesService,
-    val messagesServiceImpl: MessagesServiceImpl) {
+    val messagesServiceImpl: MessagesServiceImpl,
+    val usersService: UsersService) {
 
     data class ChatRequest(
         var trackingNumber: String,
@@ -99,18 +99,45 @@ class PackageController (
         }
     }
 
-    /*@GetMapping("/chats/{trackingNumber}")
-    fun getChatByTrackingNumber(@PathVariable("trackingNumber") trackingNumber: String, model: Model): String {
+    /*@GetMapping("/chats/{trackingNumber}/{userId}")
+    fun getChatByTrackingNumber2(@PathVariable("trackingNumber") trackingNumber: String, @PathVariable("userId") userId: UUID, model: Model): String {
         val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
         model.addAttribute("chat", chat)
+
+        val user: User? = usersService.findById(userId)
+        model.addAttribute("user", user)
+
+        if (user != null) {
+            val currentUserEmail = usersService.getCurrentUserEmail(user)
+            model.addAttribute("currentUserEmail", currentUserEmail)
+        } else {
+            logger.warn("User is null!!!")
+            return ""
+        }
 
         // Retrieve the messages for this chat room from the database and add them to the model
         val messages = messagesService.getChatRoomMessages(chat!!)
         messages.forEach() {
-            logger.info("Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
+            logger.info("Richtige Funktion: Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
         }
         model.addAttribute("messages", messages)
 
         return "chats/chatroom"
+    }
+
+    @PostMapping("/chats/{trackingNumber}/{userId}")
+    fun saveMessage2(@PathVariable("trackingNumber") trackingNumber: String, @PathVariable("userId") userId: UUID, @RequestBody message: Message): ResponseEntity<Message> {
+
+        logger.info("saveMessage2 called with trackingNumber: $trackingNumber and message: $message")
+
+        val chat : Package? = packagesService.findByTrackingNumber(trackingNumber)
+        val user : User? = usersService.findById(userId)
+        return if (chat != null) {
+            message.chat = chat
+            messagesServiceImpl.createAndSaveMessage(trackingNumber, message.sender, message.text, message.email)
+            ResponseEntity.ok().build()
+        } else {
+            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
+        }
     }*/
 }
