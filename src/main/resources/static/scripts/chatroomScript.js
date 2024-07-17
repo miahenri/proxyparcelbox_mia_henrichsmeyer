@@ -5,13 +5,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const author = document.querySelector('#messageEmail');
     const sendButton = document.getElementById('sending');
     const trackingNumber = document.getElementById('trackingNumber').textContent.split(': ')[1];
-    const chatOwner = document.getElementById('chatOwner').textContent.split(': ')[1];
-
     function getTimestamp() {
         const currentTime = new Date();
         return currentTime.toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
     }
 
+    //Darstellung der Nachricht
     function appendMessage(type, text, timestamp, sender) {
         let messageDiv = document.createElement('div');
         messageDiv.classList.add(type);
@@ -47,6 +46,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('WebSocket is closed now.', event);
     };
 
+    //Senden der Nachricht
     function sendMessage() {
         const messageText = input.value;
         if (!messageText.trim()) return; // Prevent sending empty messages
@@ -82,9 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
         ws.send(messageText);
         input.value = '';
-        author.value = author.value;
     }
 
+    //Benachrichtigung der Abonnenten
     function notifySubscribers(message, trackingNumber) {
         fetch(`/chats/subscribers/${trackingNumber}`)
             .then(response => response.json())

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="de">
-<head lang = "de">
+<head>
     <meta charset="UTF-8">
     <title>Chat zeigen</title>
     <link rel="stylesheet" href="/css/reset.css">

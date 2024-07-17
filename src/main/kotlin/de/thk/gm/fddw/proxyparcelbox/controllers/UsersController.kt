@@ -17,22 +17,9 @@ import java.util.*
 class UsersController(
     private val usersService: UsersService
 ) {
-
-    data class UserRequest(
-        var name: String,
-        var email: String
-    )
-
     @GetMapping("/login")
     fun getIndex(model: Model): String {
         return "/users/login"
-    }
-
-    @GetMapping("/users/{id}")
-    fun getUserById(@PathVariable("id") id: UUID, model: Model): String {
-        val user : User? = usersService.findById(id)
-        model.addAttribute("user", user)
-        return "users/showUser"
     }
 
     @PostMapping("/login")
@@ -43,5 +30,4 @@ class UsersController(
         usersService.save(user)
         return "redirect:/"
     }
-
 }

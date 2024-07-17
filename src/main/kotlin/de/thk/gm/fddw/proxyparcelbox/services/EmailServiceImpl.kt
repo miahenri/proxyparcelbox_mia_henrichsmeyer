@@ -33,7 +33,7 @@ class EmailServiceImpl (private var emailSender: JavaMailSender) : EmailService 
         mail.setTo(email)
         mail.subject = "Neue Chat Nachricht"
         mail.from = sender
-        mail.text = "Sie haben eine neue Nachricht im Chat $trackingNumber erhalten: $message"
+        mail.text = "Sie haben eine neue Nachricht im Chat $trackingNumber erhalten. Ihr Nachbar schreibt: $message"
         emailSender.send(mail)
     }
 }

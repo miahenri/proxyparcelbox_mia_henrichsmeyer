@@ -4,14 +4,12 @@ import de.thk.gm.fddw.proxyparcelbox.models.Message
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import de.thk.gm.fddw.proxyparcelbox.models.Package
-import de.thk.gm.fddw.proxyparcelbox.models.User
 import de.thk.gm.fddw.proxyparcelbox.services.*
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.ui.Model
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
-import java.util.*
 
 @Controller
 class PackageController (
@@ -32,13 +30,25 @@ class PackageController (
         private val logger = LoggerFactory.getLogger(PackageController::class.java)
     }
 
+    //Info Pages/Start Page
     @GetMapping("/")
     fun getIndex(model: Model): String {
         return "/index"
     }
 
-    @GetMapping("/parcels/{trackingNumber}")
-    fun getParcel(@PathVariable trackingNumber: String, model: Model, redirectAttributes: RedirectAttributes): String {
+    @GetMapping("/ueberuns")
+    fun getInfoPage(model: Model): String {
+        return "/ueberuns"
+    }
+
+    @GetMapping("/support")
+    fun getHelpPage(model: Model): String {
+        return "/support"
+    }
+
+    //QR-Code Page
+    @GetMapping("/qrcode/{trackingNumber}")
+    fun getQRCode(@PathVariable trackingNumber: String, model: Model, redirectAttributes: RedirectAttributes): String {
         var paket: Package? = packagesService.findByTrackingNumber(trackingNumber)
         model.addAttribute("paket", paket)
         return "/chats/showChat"
@@ -51,7 +61,23 @@ class PackageController (
         paket.emailUser = chatRequest.emailUser
         packagesService.save(paket)
 
-        return "redirect:/parcels/${paket.id}"
+        return "redirect:/qrcode/${paket.id}"
+    }
+
+    //Chatroom Page
+    @GetMapping("/chats/{trackingNumber}")
+    fun getChatByTrackingNumber(@PathVariable("trackingNumber") trackingNumber: String, model: Model): String {
+        val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
+        model.addAttribute("chat", chat)
+
+        // Retrieve the messages for this chat room from the database and add them to the model
+        val messages = messagesService.getChatRoomMessages(chat!!)
+        messages.forEach() {
+            logger.info("Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
+        }
+        model.addAttribute("messages", messages)
+
+        return "chats/chatroom"
     }
 
     @PostMapping("/chats/{trackingNumber}")
@@ -67,21 +93,6 @@ class PackageController (
         } else {
             ResponseEntity.status(HttpStatus.NOT_FOUND).build()
         }
-    }
-
-    @GetMapping("/chats/{trackingNumber}")
-    fun getChatByTrackingNumber(@PathVariable("trackingNumber") trackingNumber: String, model: Model): String {
-        val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
-        model.addAttribute("chat", chat)
-
-        // Retrieve the messages for this chat room from the database and add them to the model
-        val messages = messagesService.getChatRoomMessages(chat!!)
-        messages.forEach() {
-            logger.info("Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
-        }
-        model.addAttribute("messages", messages)
-
-        return "chats/chatroom"
     }
 
     @GetMapping("/chats/{trackingNumber}/messages")
@@ -100,69 +111,11 @@ class PackageController (
         }
     }
 
-    data class SubscriptionCheckRequest(val email: String)
-    @PostMapping("/chats/{trackingNumber}/isSubscribed")
-    fun isSubscribed(@PathVariable trackingNumber: String, @RequestBody request: SubscriptionCheckRequest): ResponseEntity<Boolean> {
-        val isSubscribed = packagesService.isSubscribed(trackingNumber, request.email)
-        return ResponseEntity.ok(isSubscribed)
-    }
-
+    //Subscription Page
     @GetMapping("/chats/subscribers/{trackingNumber}")
     @ResponseBody
     fun getChatSubscribers(@PathVariable trackingNumber: String): ResponseEntity<List<String>> {
         val subscribers = packagesService.getSubscribers(trackingNumber)
         return ResponseEntity.ok(subscribers)
     }
-
-    @GetMapping("/ueberuns")
-    fun getInfoPage(model: Model): String {
-        return "/ueberuns"
-    }
-
-    @GetMapping("/support")
-    fun getHelpPage(model: Model): String {
-        return "/support"
-    }
-
-    /*@GetMapping("/chats/{trackingNumber}/{userId}")
-    fun getChatByTrackingNumber2(@PathVariable("trackingNumber") trackingNumber: String, @PathVariable("userId") userId: UUID, model: Model): String {
-        val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
-        model.addAttribute("chat", chat)
-
-        val user: User? = usersService.findById(userId)
-        model.addAttribute("user", user)
-
-        if (user != null) {
-            val currentUserEmail = usersService.getCurrentUserEmail(user)
-            model.addAttribute("currentUserEmail", currentUserEmail)
-        } else {
-            logger.warn("User is null!!!")
-            return ""
-        }
-
-        // Retrieve the messages for this chat room from the database and add them to the model
-        val messages = messagesService.getChatRoomMessages(chat!!)
-        messages.forEach() {
-            logger.info("Richtige Funktion: Message ID: ${it.id}, Text: ${it.text}, Created At: ${it.createdAt}, Sender: ${it.sender}, Email: ${it.email}")
-        }
-        model.addAttribute("messages", messages)
-
-        return "chats/chatroom"
-    }
-
-    @PostMapping("/chats/{trackingNumber}/{userId}")
-    fun saveMessage2(@PathVariable("trackingNumber") trackingNumber: String, @PathVariable("userId") userId: UUID, @RequestBody message: Message): ResponseEntity<Message> {
-
-        logger.info("saveMessage2 called with trackingNumber: $trackingNumber and message: $message")
-
-        val chat : Package? = packagesService.findByTrackingNumber(trackingNumber)
-        val user : User? = usersService.findById(userId)
-        return if (chat != null) {
-            message.chat = chat
-            messagesServiceImpl.createAndSaveMessage(trackingNumber, message.sender, message.text, message.email)
-            ResponseEntity.ok().build()
-        } else {
-            ResponseEntity.status(HttpStatus.NOT_FOUND).build()
-        }
-    }*/
 }

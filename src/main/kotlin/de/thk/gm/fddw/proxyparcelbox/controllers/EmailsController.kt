@@ -14,22 +14,8 @@ class EmailsController (val emailService: EmailService, val parcelService: Parce
     companion object {
         private val logger = org.slf4j.LoggerFactory.getLogger(EmailsController::class.java)
     }
-    @GetMapping("/demo/sendemailform")
-    fun sendEmailForm() : String {
-        return "demo/sendemailform"
-    }
-    @PostMapping("/demo/emails")
-    fun sendEmail(receiver: String, subject: String, message: String) : String {
-        emailService.sendSimpleMessage(receiver, subject, message)
-        return "redirect:/demo/sendemailform"
-    }
 
-    @GetMapping("/demo/testparcelservice/{trackingNumber}")
-    @ResponseBody
-    fun testParcelService(@PathVariable trackingNumber : String) : String {
-        return parcelService.getEmailByTrackingNumber(trackingNumber) }
-
-
+    //Subscription
     @GetMapping("/chats/{trackingNumber}/subscribe")
     fun getEmailSubscription(@PathVariable trackingNumber: String, model: Model) : String {
         val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
@@ -58,6 +44,7 @@ class EmailsController (val emailService: EmailService, val parcelService: Parce
         return "redirect:/chats/${trackingNumber}"
     }
 
+    data class NotificationRequest(val email: String, val message: String)
     @PostMapping("/chats/{trackingNumber}/notify")
     @ResponseBody
     fun notifyByEmail(@PathVariable trackingNumber: String, @RequestBody notificationRequest: NotificationRequest) : String {
@@ -65,5 +52,23 @@ class EmailsController (val emailService: EmailService, val parcelService: Parce
         return "Notification sent"
     }
 
-    data class NotificationRequest(val email: String, val message: String)
+
+
+
+
+    //Email Demo (Probe aus Vorlesung)
+    @GetMapping("/demo/sendemailform")
+    fun sendEmailForm() : String {
+        return "demo/sendemailform"
+    }
+    @PostMapping("/demo/emails")
+    fun sendEmail(receiver: String, subject: String, message: String) : String {
+        emailService.sendSimpleMessage(receiver, subject, message)
+        return "redirect:/demo/sendemailform"
+    }
+
+    @GetMapping("/demo/testparcelservice/{trackingNumber}")
+    @ResponseBody
+    fun testParcelService(@PathVariable trackingNumber : String) : String {
+        return parcelService.getEmailByTrackingNumber(trackingNumber) }
 }
