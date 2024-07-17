@@ -34,7 +34,7 @@ class PackageController (
 
     @GetMapping("/")
     fun getIndex(model: Model): String {
-        return "Index"
+        return "/index"
     }
 
     @GetMapping("/parcels/{trackingNumber}")
