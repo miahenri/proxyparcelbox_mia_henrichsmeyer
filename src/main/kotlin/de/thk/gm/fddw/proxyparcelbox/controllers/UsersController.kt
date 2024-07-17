@@ -1,5 +1,6 @@
 package de.thk.gm.fddw.proxyparcelbox.controllers
 
+import de.thk.gm.fddw.proxyparcelbox.dtos.UserDTO
 import de.thk.gm.fddw.proxyparcelbox.models.User
 import de.thk.gm.fddw.proxyparcelbox.services.UsersService
 import jakarta.validation.Valid
@@ -35,10 +36,10 @@ class UsersController(
     }
 
     @PostMapping("/login")
-    fun createUser(@ModelAttribute userRequest: UsersController.UserRequest, model: Model): String {
+    fun createUser(@Valid userDTO: UserDTO): String {
         var user: User = User()
-        user.email = userRequest.email
-        user.name = userRequest.name
+        user.email = userDTO.email
+        user.name = userDTO.name
         usersService.save(user)
         return "redirect:/"
     }

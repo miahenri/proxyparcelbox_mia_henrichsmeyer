@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const ws = new WebSocket("/messages");
     const echo = document.querySelector('.messages');
     const input = document.querySelector('#messageText');
-    const email = document.querySelector('#messageEmail');
+    const author = document.querySelector('#messageEmail');
     const sendButton = document.getElementById('sending');
     const trackingNumber = document.getElementById('trackingNumber').textContent.split(': ')[1];
     const chatOwner = document.getElementById('chatOwner').textContent.split(': ')[1];
@@ -13,14 +13,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function appendMessage(type, text, timestamp, sender) {
-        if(sender === chatOwner) {
-            console.log('Comparing sender(' + sender + ' and chatOwner ' + chatOwner +'. Same');
-            type = 'sent';
-        } else {
-            console.log('Comparing sender(' + sender + ' and chatOwner' + chatOwner + '. Different');
-            type = 'received';
-        }
-
         let messageDiv = document.createElement('div');
         messageDiv.classList.add(type);
 
@@ -58,7 +50,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function sendMessage() {
         const messageText = input.value;
         if (!messageText.trim()) return; // Prevent sending empty messages
-        const messageEmail = email.value;
+        const messageEmail = author.value;
 
         appendMessage('sent', messageText, getTimestamp(), messageEmail);
 
@@ -90,28 +82,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
         ws.send(messageText);
         input.value = '';
+        author.value = author.value;
     }
 
-    function notifySubscribers(message, trackingNumber){
+    function notifySubscribers(message, trackingNumber) {
         fetch(`/chats/subscribers/${trackingNumber}`)
             .then(response => response.json())
             .then(subscribers => {
                 subscribers.forEach(email => {
-                    const url = `/chats/${trackingNumber}/notify`;
-                    fetch(url, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({ email, message })
-                    })
-                        .then(response => {
-                            if (!response.ok) {
-                                throw new Error('E-Mail konnte nicht gesendet werden');
-                            }
-                            console.log("E-Mail erfolgreich an " + email + " gesendet");
+                    if (email === author.value) {
+                        console.log("Du hast diese Nachricht selbst verfasst und erhälst keine E-Mail-Benachrichtigung.");
+                    } else {
+                        const url = `/chats/${trackingNumber}/notify`;
+                        fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({email, message})
                         })
-                        .catch(error => console.error('Error:', error));
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('E-Mail konnte nicht gesendet werden');
+                                }
+                                console.log("E-Mail erfolgreich an " + email + " gesendet");
+                            })
+                            .catch(error => console.error('Error:', error));
+                    }
                 });
             })
             .catch(error => console.error('Error:', error));
