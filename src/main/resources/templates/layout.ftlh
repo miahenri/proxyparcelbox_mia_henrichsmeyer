@@ -12,13 +12,13 @@
     <body>
     <header class="main-header">
         <nav class="main-nav-bar">
-            <img class="logo" src="/images/proxyparcel-logo-hell-kopie.png" alt="Logo" height="90">
+            <a href="/"><img class="logo" src="/images/proxyparcel-logo-hell-kopie.png" alt="Logo" height="90"></a>
             <div>
-                <a class="basic-link" href="/login">Chat starten</a>
-                <a class="basic-link" href="/new-parcels">Support</a>
-                <a class="basic-link" href="/new-parcels">Über uns</a>
+                <a class="basic-link" href="/">Chat starten</a>
+                <a class="basic-link" href="/support">Support</a>
+                <a class="basic-link" href="/ueberuns">Über uns</a>
                 <button class="user-button"><a href="/login">Login</a></button>
-                <button class="user-button">Registrierung</button>
+                <button class="user-button"><a href="/login">Registrierung</a></button>
             </div>
         </nav>
     </header>

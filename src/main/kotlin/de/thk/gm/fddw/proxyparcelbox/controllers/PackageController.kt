@@ -114,6 +114,16 @@ class PackageController (
         return ResponseEntity.ok(subscribers)
     }
 
+    @GetMapping("/ueberuns")
+    fun getInfoPage(model: Model): String {
+        return "/ueberuns"
+    }
+
+    @GetMapping("/support")
+    fun getHelpPage(model: Model): String {
+        return "/support"
+    }
+
     /*@GetMapping("/chats/{trackingNumber}/{userId}")
     fun getChatByTrackingNumber2(@PathVariable("trackingNumber") trackingNumber: String, @PathVariable("userId") userId: UUID, model: Model): String {
         val chat: Package? = packagesService.findByTrackingNumber(trackingNumber)
